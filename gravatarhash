@@ -1,0 +1,52 @@
+#!/bin/sh
+
+set -e
+
+typeset -r PROGNAME="`basename $0`"
+typeset -r VERSION='v1.0'
+
+usage() {
+        echo "usage: $PROGNAME [-dhsV] email"
+}
+
+version() {
+        echo "$PROGNAME $VERSION"
+}
+
+uri="http://www.gravatar.com"
+tail="?d=retro"
+
+while getopts "dhsV" opt;do
+	case $opt in
+		d) set -x;;
+		h) usage; exit 0;;	# NOTREACHED
+		s) uri="https://secure.gravatar.com";;
+		V) version; exit 0;;	# NOTREACHED
+		*) usage; exit 1;;	# NOTREACHED
+		:) echo "$PROGNAME: option requires an argument -- $OPTARG";
+		   usage; exit 1;;	# NOTREACHED
+		?) echo "$PROGNAME: unkown option -- $OPTARG";
+		   usage; exit 1;;	# NOTREACHED
+	esac
+done
+shift $(( $OPTIND -1 ))
+
+if [ -z "$1" ]; then
+	echo "$PROGNAME: email addresse expected"
+	usage
+	exit 1
+else
+	email="$1"
+	shift
+fi
+
+if [ $# -ge 1 ]; then
+	echo "$PROGNAME: invalid trailing chars -- $@"
+	usage
+	exit 1
+fi
+
+email="`echo $email|tr '[A-Z' '[a-z]'`"
+hash="`md5 -qs $email`"
+
+echo $uri/avatar/$hash$tail
