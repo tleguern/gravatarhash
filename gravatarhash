@@ -1,9 +1,24 @@
 #!/bin/sh
+#
+# Copyright (c) 2014 Tristan Le Guern <tleguern@bouledef.eu>
+#
+# Permission to use, copy, modify, and distribute this software for any
+# purpose with or without fee is hereby granted, provided that the above
+# copyright notice and this permission notice appear in all copies.
+#
+# THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+# WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+# MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+# ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+# WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+# ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+# OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+#
 
 set -e
 
-typeset -r PROGNAME="`basename $0`"
-typeset -r VERSION='v1.0'
+PROGNAME="`basename $0`"
+VERSION='v1.0'
 
 usage() {
         echo "usage: $PROGNAME [-dhsV] email"
@@ -47,6 +62,10 @@ if [ $# -ge 1 ]; then
 fi
 
 email="`echo $email|tr '[A-Z' '[a-z]'`"
-hash="`md5 -qs $email`"
+if which md5 > /dev/null; then
+       hash="`md5 -qs $email`"
+else
+       hash="`echo -n $email|md5sum|cut -d' ' -f1`"
+fi
 
 echo $uri/avatar/$hash$tail
