@@ -31,17 +31,16 @@ version() {
 uri="http://www.gravatar.com"
 tail="?d=retro"
 
-while getopts "dhsV" opt;do
+while getopts "dhsV" opt 2> /dev/null;do
 	case $opt in
 		d) set -x;;
 		h) usage; exit 0;;	# NOTREACHED
 		s) uri="https://secure.gravatar.com";;
 		V) version; exit 0;;	# NOTREACHED
-		*) usage; exit 1;;	# NOTREACHED
 		:) echo "$PROGNAME: option requires an argument -- $OPTARG";
 		   usage; exit 1;;	# NOTREACHED
-		?) echo "$PROGNAME: unkown option -- $OPTARG";
-		   usage; exit 1;;	# NOTREACHED
+		'?') echo "$PROGNAME: unkown option"; # FALLTHROUGH
+		*) usage; exit 1;;	# NOTREACHED
 	esac
 done
 shift $(( $OPTIND -1 ))
