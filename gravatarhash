@@ -61,6 +61,8 @@ if [ $# -ge 1 ]; then
 	exit 1
 fi
 
+set -u
+
 email="`echo $email|tr '[A-Z' '[a-z]'`"
 if which md5 > /dev/null; then
        hash="`md5 -qs $email`"
