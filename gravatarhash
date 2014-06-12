@@ -17,8 +17,8 @@
 
 set -e
 
-PROGNAME="`basename $0`"
-VERSION='v1.0'
+readonly PROGNAME="`basename $0`"
+readonly VERSION='v1.0'
 
 usage() {
         echo "usage: $PROGNAME [-dhsV] email"
