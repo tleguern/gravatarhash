@@ -28,14 +28,16 @@ version() {
         echo "$PROGNAME $VERSION"
 }
 
+sflag=0
 uri="http://www.gravatar.com"
+securi="https://secure.gravatar.com"
 tail="?d=retro"
 
 while getopts ":dhsV" opt;do
 	case $opt in
 		d) set -x;;
 		h) usage; exit 0;;	# NOTREACHED
-		s) uri="https://secure.gravatar.com";;
+		s) sflag=1;;
 		V) version; exit 0;;	# NOTREACHED
 		:) echo "$PROGNAME: option requires an argument -- $OPTARG";
 		   usage; exit 1;;	# NOTREACHED
@@ -62,6 +64,10 @@ if [ $# -ge 1 ]; then
 fi
 
 set -u
+
+if [ $sflag -eq 1 ]; then
+	$uri="$securi"
+fi
 
 email="`echo $email|tr '[A-Z' '[a-z]'`"
 if which md5 > /dev/null; then
