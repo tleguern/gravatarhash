@@ -65,8 +65,28 @@ fi
 
 set -u
 
+getdnsuri() {
+	set -x
+	domain="$1"
+	service="_avatars._tcp"
+	if [ $sflag -eq 1 ]; then
+		service="_avatars-sec._tcp"
+	fi
+	if ret="`dig +short $service.$domain -t SRV`"; then
+		# TODO: Check priority and weight
+		echo $ret | cut -d ' ' -f 4
+	else
+		echo "Can't perform DNS request to $service.$domain"
+	fi
+}
+
 if [ $sflag -eq 1 ]; then
 	$uri="$securi"
+fi
+
+dnsuri="$( getdnsuri `echo $email|cut -d'@' -f2` )"
+if [ -n "$dnsuri" ]; then
+	uri="$dnsuri"
 fi
 
 email="`echo $email|tr '[A-Z' '[a-z]'`"
