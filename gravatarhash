@@ -111,9 +111,8 @@ getdnsbaseuri() {
 	fi
 
 	# TODO: Check priority and weight
-	echo $dns_ret | cut -d ' ' -f 4
+	echo "$dns_ret/avatar" | cut -d ' ' -f 4
 }
-
 
 # If asked, use the specific provider. If not do a DNS request and
 # fallback to gravatar.
