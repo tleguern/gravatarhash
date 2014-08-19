@@ -66,7 +66,6 @@ fi
 set -u
 
 getdnsuri() {
-	set -x
 	domain="$1"
 	service="_avatars._tcp"
 	if [ $sflag -eq 1 ]; then
