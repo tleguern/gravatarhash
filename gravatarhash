@@ -18,7 +18,7 @@
 set -e
 
 readonly PROGNAME="`basename $0`"
-readonly VERSION='v1.0'
+readonly VERSION='v1.1'
 
 usage() {
         echo "usage: $PROGNAME [-dhsV] [-p dns|gravatar|libreavatar] email"
