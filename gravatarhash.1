@@ -14,22 +14,35 @@
 .\"
 .\" The following requests are required for all man pages.
 .\"
-.Dd $Mdocdate$
+.Dd $Mdocdate: August 19 2014 $
 .Dt GRAVATARHASH 1
 .Os
 .Sh NAME
 .Nm gravatarhash
-.Nd Generate a gravatar URL from an email address
+.Nd Generate an avatar URL from an email address
 .Sh SYNOPSIS
 .Nm
 .Op Fl dhsV
+.Op Fl p Cm dns | Cm gravatar | Cm libreavatar
 .Ar email
 .Sh DESCRIPTION
 The
 .Nm
-utility process the given
+utility processes the given
 .Ar email
-address into a full Gravatar URL.
+address into an URL pointing to an avatar image.
+.Pp
+Three providers are currently supported:
+.Bl -bullet -compact
+.It
+Gravatar (https://secure.gravatar.com/);
+.It
+Libreavatar (https://www.libravatar.org/);
+.It
+self hosted people (SRV DNS query).
+.El
+The default is to do a DNS query first and fallback to Gravatar if the
+query fails.
 .Pp
 The options are as follows:
 .Bl -tag -width Ds
@@ -37,6 +50,8 @@ The options are as follows:
 Enable debug mode.
 .It Fl h
 Print usage and quit.
+.It Fl p
+Only use the specified avatar provider.
 .It Fl s
 Use the HTTPS URL instead of the default one.
 .It Fl V

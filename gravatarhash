@@ -21,7 +21,7 @@ readonly PROGNAME="`basename $0`"
 readonly VERSION='v1.0'
 
 usage() {
-        echo "usage: $PROGNAME [-dhsV] email"
+        echo "usage: $PROGNAME [-dhsV] [-p dns|gravatar|libreavatar] email"
 }
 
 version() {
@@ -29,14 +29,15 @@ version() {
 }
 
 sflag=0
-uri="http://www.gravatar.com"
-securi="https://secure.gravatar.com"
+pflag=''
+
 tail="?d=retro"
 
-while getopts ":dhsV" opt;do
+while getopts ":dhp:sV" opt;do
 	case $opt in
 		d) set -x;;
 		h) usage; exit 0;;	# NOTREACHED
+		p) pflag=$OPTARG;;
 		s) sflag=1;;
 		V) version; exit 0;;	# NOTREACHED
 		:) echo "$PROGNAME: option requires an argument -- $OPTARG";
@@ -63,30 +64,65 @@ if [ $# -ge 1 ]; then
 	exit 1
 fi
 
+[ -n "$pflag" ] && case "$pflag" in
+	dns|gravatar|libreavatar) :;;
+	*) usage; exit 1;;	# NOTREACHED
+esac
+
 set -u
 
-getdnsuri() {
-	domain="$1"
-	service="_avatars._tcp"
+getgravatarbaseuri() {
+	ga_uri="http://www.gravatar.com/avatar"
+	ga_securi="https://secure.gravatar.com/avatar"
+
 	if [ $sflag -eq 1 ]; then
-		service="_avatars-sec._tcp"
-	fi
-	if ret="`dig +short $service.$domain -t SRV`"; then
-		# TODO: Check priority and weight
-		echo $ret | cut -d ' ' -f 4
+		echo $ga_securi;
 	else
-		echo "Can't perform DNS request to $service.$domain"
+		echo $ga_uri;
 	fi
 }
 
-if [ $sflag -eq 1 ]; then
-	$uri="$securi"
-fi
+getlibreavatarbaseuri() {
+	la_uri="http://cdn.libravatar.org/avatar"
+	la_securi="https://seccdn.libravatar.org/avatar"
 
-dnsuri="$( getdnsuri `echo $email|cut -d'@' -f2` )"
-if [ -n "$dnsuri" ]; then
-	uri="$dnsuri"
-fi
+	if [ $sflag -eq 1 ]; then
+		echo $la_securi;
+	else
+		echo $la_uri;
+	fi
+}
+
+getdnsbaseuri() {
+	dns_domain="$( echo $1 | cut -d '@' -f 2 )"
+
+	if [ $sflag -eq 1 ]; then
+		dns_service="_avatars-sec._tcp"
+	else
+		dns_service="_avatars._tcp"
+	fi
+
+	if dns_ret="`dig +short $dns_service.$dns_domain -t SRV`"; then :
+	else
+		return 1
+	fi
+	if [ -z "$dns_ret" ]; then
+		return 1
+	fi
+
+	# TODO: Check priority and weight
+	echo $dns_ret | cut -d ' ' -f 4
+}
+
+
+# If asked, use the specific provider. If not do a DNS request and
+# fallback to gravatar.
+case "$pflag" in
+	dns) baseuri=$( getdnsbaseuri $email );;
+	libreavatar) baseuri=$( getlibreavatarbaseuri );;
+	gravatar) baseuri=$( getgravatarbaseuri );;
+	*) baseuri=$( getdnsbaseuri $email || getgravatarbaseuri );;
+esac
 
 email="`echo $email|tr '[A-Z' '[a-z]'`"
 if which md5 > /dev/null; then
@@ -95,4 +131,4 @@ else
        hash="`echo -n $email|md5sum|cut -d' ' -f1`"
 fi
 
-echo $uri/avatar/$hash$tail
+echo $baseuri/$hash$tail
