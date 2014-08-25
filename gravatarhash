@@ -109,8 +109,10 @@ getdnsbaseuri() {
 	if [ -z "$dns_ret" ]; then
 		return 1
 	fi
-
 	# TODO: Check priority and weight
+
+	# Clean up the trailing dot
+	dns_ret="`echo $dns_ret|rev|cut -d'.' -f2-|rev`"
 	echo "$dns_ret/avatar" | cut -d ' ' -f 4
 }
 
