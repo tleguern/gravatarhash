@@ -28,6 +28,14 @@ version() {
         echo "$PROGNAME $VERSION"
 }
 
+_md5() {
+	if which md5 > /dev/null; then
+		md5 -qs $1
+	else
+		echo -n $1 | md5sum | cut -d' ' -f1
+	fi
+}
+
 sflag=0
 pflag=''
 
@@ -126,10 +134,6 @@ case "$pflag" in
 esac
 
 email="`echo $email|tr '[A-Z' '[a-z]'`"
-if which md5 > /dev/null; then
-       hash="`md5 -qs $email`"
-else
-       hash="`echo -n $email|md5sum|cut -d' ' -f1`"
-fi
+hash="`_md5 $email`"
 
 echo $baseuri/$hash$tail
