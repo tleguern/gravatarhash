@@ -1,11 +1,10 @@
 SCRIPT= gravatarhash.sh
-MAN= gravatarhash.1
+PROG= ${SCRIPT:R}
 
-BINDIR?= bin
-DESTDIR?= /usr/local/
+BINDIR?= /usr/local/bin
 
-install:
+install: maninstall
 	${INSTALL} ${INSTALL_COPY} -o ${BINOWN} -g ${BINGRP} -m ${BINMODE} \
-		${.CURDIR}/${SCRIPT} ${DESTDIR}${BINDIR}/gravatarhash
+		${.CURDIR}/${SCRIPT} ${BINDIR}/${PROG}
 
 .include <bsd.prog.mk>
