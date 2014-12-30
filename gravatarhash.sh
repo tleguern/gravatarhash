@@ -21,11 +21,7 @@ readonly PROGNAME="`basename $0`"
 readonly VERSION='v1.1'
 
 usage() {
-        echo "usage: $PROGNAME [-dhsV] [-p dns|gravatar|libreavatar] email"
-}
-
-version() {
-        echo "$PROGNAME $VERSION"
+        echo "usage: $PROGNAME [-s] [-p dns|gravatar|libreavatar] email"
 }
 
 _md5() {
@@ -41,13 +37,10 @@ pflag=''
 
 tail="?d=retro"
 
-while getopts ":dhp:sV" opt;do
+while getopts ":p:s" opt;do
 	case $opt in
-		d) set -x;;
-		h) usage; exit 0;;	# NOTREACHED
 		p) pflag=$OPTARG;;
 		s) sflag=1;;
-		V) version; exit 0;;	# NOTREACHED
 		:) echo "$PROGNAME: option requires an argument -- $OPTARG";
 		   usage; exit 1;;	# NOTREACHED
 		?) echo "$PROGNAME: unkown option -- $OPTARG";

@@ -22,7 +22,7 @@
 .Nd Generate an avatar URL from an email address
 .Sh SYNOPSIS
 .Nm
-.Op Fl dhsV
+.Op Fl s
 .Op Fl p Cm dns | Cm gravatar | Cm libreavatar
 .Ar email
 .Sh DESCRIPTION
@@ -46,16 +46,10 @@ query fails.
 .Pp
 The options are as follows:
 .Bl -tag -width Ds
-.It Fl d
-Enable debug mode.
-.It Fl h
-Print usage and quit.
 .It Fl p
 Only use the specified avatar provider.
 .It Fl s
 Use the HTTPS URL instead of the default one.
-.It Fl V
-Print version and quit.
 .El
 .Sh SEE ALSO
 .Xr md5 1
