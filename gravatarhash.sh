@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2014 Tristan Le Guern <tleguern@bouledef.eu>
+# Copyright (c) 2014,2015 Tristan Le Guern <tleguern@bouledef.eu>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
