@@ -99,8 +99,10 @@ getdnsbaseuri() {
 
 	if [ $sflag -eq 1 ]; then
 		dns_service="_avatars-sec._tcp"
+		proto="https"
 	else
 		dns_service="_avatars._tcp"
+		proto="http"
 	fi
 
 	if dns_ret="`dig +short $dns_service.$dns_domain -t SRV`"; then :
@@ -113,8 +115,8 @@ getdnsbaseuri() {
 	# TODO: Check priority and weight
 
 	# Clean up the trailing dot
-	dns_ret="`echo $dns_ret|rev|cut -d'.' -f2-|rev`"
-	echo "$dns_ret/avatar" | cut -d ' ' -f 4
+	dns_ret="`echo $dns_ret|rev|cut -d'.' -f2-|rev|cut -d ' ' -f 4`"
+	echo "$proto://$dns_ret/avatar"
 }
 
 # If asked, use the specific provider. If not do a DNS request and
