@@ -17,7 +17,7 @@
 
 set -e
 
-readonly PROGNAME="`basename $0`"
+readonly PROGNAME="$(basename $0)"
 readonly VERSION='v1.1'
 
 usage() {
@@ -105,7 +105,7 @@ getdnsbaseuri() {
 		proto="http"
 	fi
 
-	if dns_ret="`dig +short $dns_service.$dns_domain -t SRV`"; then :
+	if dns_ret="$(dig +short $dns_service.$dns_domain -t SRV)"; then :
 	else
 		return 1
 	fi
@@ -115,20 +115,20 @@ getdnsbaseuri() {
 	# TODO: Check priority and weight
 
 	# Clean up the trailing dot
-	dns_ret="`echo $dns_ret|rev|cut -d'.' -f2-|rev|cut -d ' ' -f 4`"
+	dns_ret="$(echo $dns_ret|rev|cut -d'.' -f2-|rev|cut -d ' ' -f 4)"
 	echo "$proto://$dns_ret/avatar"
 }
 
 # If asked, use the specific provider. If not do a DNS request and
 # fallback to gravatar.
 case "$pflag" in
-	dns) baseuri=$( getdnsbaseuri $email );;
-	libreavatar) baseuri=$( getlibreavatarbaseuri );;
-	gravatar) baseuri=$( getgravatarbaseuri );;
-	*) baseuri=$( getdnsbaseuri $email || getgravatarbaseuri );;
+	dns) baseuri="$(getdnsbaseuri $email)";;
+	libreavatar) baseuri="$(getlibreavatarbaseuri)";;
+	gravatar) baseuri="$(getgravatarbaseuri)";;
+	*) baseuri="$(getdnsbaseuri $email || getgravatarbaseuri)";;
 esac
 
-email="`echo $email|tr '[A-Z' '[a-z]'`"
-hash="`_md5 $email`"
+email="$(echo $email|tr '[A-Z' '[a-z]')"
+hash="$(_md5 $email)"
 
 echo $baseuri/$hash$tail
