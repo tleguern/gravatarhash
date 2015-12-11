@@ -99,8 +99,7 @@ getdnsbaseuri() {
 		proto="http"
 	fi
 
-	if dns_ret="$(dig +short $dns_service.$dns_domain -t SRV)"; then :
-	else
+	if ! dns_ret="$(dig +short $dns_service.$dns_domain -t SRV)"; then
 		return 1
 	fi
 	if [ -z "$dns_ret" ]; then
