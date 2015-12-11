@@ -73,24 +73,18 @@ esac
 set -u
 
 getgravatarbaseuri() {
-	ga_uri="http://www.gravatar.com/avatar"
-	ga_securi="https://secure.gravatar.com/avatar"
-
 	if [ $sflag -eq 1 ]; then
-		echo $ga_securi;
+		echo "https://secure.gravatar.com/avatar"
 	else
-		echo $ga_uri;
+		echo "http://www.gravatar.com/avatar"
 	fi
 }
 
 getlibreavatarbaseuri() {
-	la_uri="http://cdn.libravatar.org/avatar"
-	la_securi="https://seccdn.libravatar.org/avatar"
-
 	if [ $sflag -eq 1 ]; then
-		echo $la_securi;
+		echo "https://seccdn.libravatar.org/avatar"
 	else
-		echo $la_uri;
+		echo "http://cdn.libravatar.org/avatar"
 	fi
 }
 
