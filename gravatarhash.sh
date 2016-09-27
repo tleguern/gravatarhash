@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2014,2015 Tristan Le Guern <tleguern@bouledef.eu>
+# Copyright (c) 2014-2016 Tristan Le Guern <tleguern@bouledef.eu>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -93,10 +93,10 @@ getdnsbaseuri() {
 
 	if [ $sflag -eq 1 ]; then
 		dns_service="_avatars-sec._tcp"
-		proto="https"
+		scheme="https"
 	else
 		dns_service="_avatars._tcp"
-		proto="http"
+		scheme="http"
 	fi
 
 	if ! dns_ret="$(dig +short $dns_service.$dns_domain -t SRV)"; then
@@ -109,7 +109,7 @@ getdnsbaseuri() {
 
 	# Clean up the trailing dot
 	dns_ret="$(echo $dns_ret|rev|cut -d'.' -f2-|rev|cut -d ' ' -f 4)"
-	echo "$proto://$dns_ret/avatar"
+	echo "$scheme://$dns_ret/avatar"
 }
 
 # If asked, use the specific provider. If not do a DNS request and
