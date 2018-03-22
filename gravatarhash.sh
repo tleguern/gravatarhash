@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright (c) 2014-2016 Tristan Le Guern <tleguern@bouledef.eu>
+# Copyright (c) 2014-2016,2018 Tristan Le Guern <tleguern@bouledef.eu>
 #
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -21,7 +21,16 @@ readonly PROGNAME="$(basename $0)"
 readonly VERSION='v1.1'
 
 usage() {
-        echo "usage: $PROGNAME [-s] [-p dns|gravatar|libreavatar] email"
+        echo "usage: $PROGNAME [-s] [-h md5|sha256]"\
+	    "[-p dns|gravatar|libreavatar] email"
+}
+
+_sha256() {
+	if which sha256 > /dev/null; then
+		sha256 -qs $1
+	else
+		echo -n $1 | sha256sum | cut -d' ' -f1
+	fi
 }
 
 _md5() {
@@ -32,20 +41,21 @@ _md5() {
 	fi
 }
 
-sflag=0
+hflag='md5'
 pflag=''
+sflag=0
 
 tail="?d=retro"
 
-while getopts ":p:s" opt;do
+while getopts ":h:p:s" opt;do
 	case $opt in
+		h) hflag=$OPTARG;;
 		p) pflag=$OPTARG;;
 		s) sflag=1;;
 		:) echo "$PROGNAME: option requires an argument -- $OPTARG";
 		   usage; exit 1;;	# NOTREACHED
-		?) echo "$PROGNAME: unkown option -- $OPTARG";
+		\?) echo "$PROGNAME: unkown option -- $OPTARG";
 		   usage; exit 1;;	# NOTREACHED
-		*) usage; exit 1;;	# NOTREACHED
 	esac
 done
 shift $(( $OPTIND -1 ))
@@ -67,6 +77,17 @@ fi
 
 [ -n "$pflag" ] && case "$pflag" in
 	dns|gravatar|libreavatar) :;;
+	*) usage; exit 1;;	# NOTREACHED
+esac
+
+case "$hflag" in
+	md5) hflag=_md5;;
+	sha256) if [ "$pflag" = "gravatar" ]; then
+			echo "$PROGNAME: sha256 mode can't be used" \
+			    "with gravatar" >&2
+			exit 1
+		fi
+		hflag=_sha256;;
 	*) usage; exit 1;;	# NOTREACHED
 esac
 
@@ -122,6 +143,6 @@ case "$pflag" in
 esac
 
 email="$(echo $email|tr '[A-Z' '[a-z]')"
-hash="$(_md5 $email)"
+hash="$($hflag $email)"
 
 echo $baseuri/$hash$tail

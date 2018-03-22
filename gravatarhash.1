@@ -23,6 +23,7 @@
 .Sh SYNOPSIS
 .Nm
 .Op Fl s
+.Op Fl h Cm md5 | Cm sha256
 .Op Fl p Cm dns | Cm gravatar | Cm libreavatar
 .Ar email
 .Sh DESCRIPTION
@@ -46,6 +47,12 @@ query fails.
 .Pp
 The options are as follows:
 .Bl -tag -width Ds
+.It Fl h
+Use either
+.Xr md5
+or
+.Xr sha256
+for the hash creation.
 .It Fl p
 Only use the specified avatar provider.
 .It Fl s
