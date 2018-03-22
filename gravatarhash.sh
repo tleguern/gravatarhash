@@ -22,7 +22,7 @@ readonly VERSION='v1.1'
 
 usage() {
         echo "usage: $PROGNAME [-s] [-h md5|sha256]"\
-	    "[-p dns|gravatar|libreavatar] email"
+	    "[-p dns|gravatar|libravatar] email"
 }
 
 _sha256() {
@@ -76,7 +76,7 @@ if [ $# -ge 1 ]; then
 fi
 
 [ -n "$pflag" ] && case "$pflag" in
-	dns|gravatar|libreavatar) :;;
+	dns|gravatar|libravatar) :;;
 	*) usage; exit 1;;	# NOTREACHED
 esac
 
@@ -101,7 +101,7 @@ getgravatarbaseuri() {
 	fi
 }
 
-getlibreavatarbaseuri() {
+getlibravatarbaseuri() {
 	if [ $sflag -eq 1 ]; then
 		echo "https://seccdn.libravatar.org/avatar"
 	else
@@ -137,7 +137,7 @@ getdnsbaseuri() {
 # fallback to gravatar.
 case "$pflag" in
 	dns) baseuri="$(getdnsbaseuri $email)";;
-	libreavatar) baseuri="$(getlibreavatarbaseuri)";;
+	libravatar) baseuri="$(getlibravatarbaseuri)";;
 	gravatar) baseuri="$(getgravatarbaseuri)";;
 	*) baseuri="$(getdnsbaseuri $email || getgravatarbaseuri)";;
 esac
