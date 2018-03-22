@@ -23,6 +23,7 @@
 .Sh SYNOPSIS
 .Nm
 .Op Fl s
+.Op Fl d Cm default
 .Op Fl h Cm md5 | Cm sha256
 .Op Fl p Cm dns | Cm gravatar | Cm libravatar
 .Ar email
@@ -47,6 +48,9 @@ query fails.
 .Pp
 The options are as follows:
 .Bl -tag -width Ds
+.It Fl d
+Specify what to do if the avatar doesn't exist.  Can be 404, mm, blank,
+retro or absolutely anything.
 .It Fl h
 Use either
 .Xr md5

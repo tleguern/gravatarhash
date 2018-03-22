@@ -21,7 +21,7 @@ readonly PROGNAME="$(basename $0)"
 readonly VERSION='v1.1'
 
 usage() {
-        echo "usage: $PROGNAME [-s] [-h md5|sha256]"\
+        echo "usage: $PROGNAME [-s] [-d default] [-h md5|sha256]"\
 	    "[-p dns|gravatar|libravatar] email"
 }
 
@@ -41,14 +41,14 @@ _md5() {
 	fi
 }
 
+dflag=''
 hflag='md5'
 pflag=''
 sflag=0
 
-tail="?d=retro"
-
-while getopts ":h:p:s" opt;do
+while getopts ":d:h:p:s" opt;do
 	case $opt in
+		d) dflag=$OPTARG;;
 		h) hflag=$OPTARG;;
 		p) pflag=$OPTARG;;
 		s) sflag=1;;
@@ -90,6 +90,10 @@ case "$hflag" in
 		hflag=_sha256;;
 	*) usage; exit 1;;	# NOTREACHED
 esac
+
+if [ -n "$dflag" ]; then
+	dflag="?d=$dflag"
+fi
 
 set -u
 
@@ -145,4 +149,4 @@ esac
 email="$(echo $email|tr '[A-Z' '[a-z]')"
 hash="$($hflag $email)"
 
-echo $baseuri/$hash$tail
+echo "$baseuri/$hash$dflag"
