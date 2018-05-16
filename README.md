@@ -7,7 +7,7 @@ GRAVATARHASH(1) - General Commands Manual
 # SYNOPSIS
 
 **gravatarhash**
-\[**-s**]
+\[**-fs**]
 \[**-d**&nbsp;**default**]
 \[**-h**&nbsp;**md5**&nbsp;|&nbsp;**sha256**]
 \[**-p**&nbsp;**dns**&nbsp;|&nbsp;**gravatar**&nbsp;|&nbsp;**libravatar**]
@@ -36,6 +36,10 @@ The options are as follows:
 
 > Specify what to do if the avatar doesn't exist.  Can be 404, mm, blank,
 > retro or absolutely anything.
+
+**-f**
+
+> Enable the forcedefault flag.
 
 **-h**
 
