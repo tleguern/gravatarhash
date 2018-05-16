@@ -8,7 +8,9 @@ GRAVATARHASH(1) - General Commands Manual
 
 **gravatarhash**
 \[**-s**]
-\[**-p**&nbsp;**dns**&nbsp;|&nbsp;**gravatar**&nbsp;|&nbsp;**libreavatar**]
+\[**-d**&nbsp;**default**]
+\[**-h**&nbsp;**md5**&nbsp;|&nbsp;**sha256**]
+\[**-p**&nbsp;**dns**&nbsp;|&nbsp;**gravatar**&nbsp;|&nbsp;**libravatar**]
 *email*
 
 # DESCRIPTION
@@ -30,6 +32,19 @@ query fails.
 
 The options are as follows:
 
+**-d**
+
+> Specify what to do if the avatar doesn't exist.  Can be 404, mm, blank,
+> retro or absolutely anything.
+
+**-h**
+
+> Use either
+> md5
+> or
+> sha256
+> for the hash creation.
+
 **-p**
 
 > Only use the specified avatar provider.
@@ -42,4 +57,4 @@ The options are as follows:
 
 md5(1)
 
-Linux 4.9.0-3-amd64 - August 19, 2014
+OpenBSD 6.3 - August 19, 2014
