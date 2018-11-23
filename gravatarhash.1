@@ -39,9 +39,9 @@ Three providers are currently supported:
 .It
 Gravatar (https://secure.gravatar.com/);
 .It
-Libreavatar (https://www.libravatar.org/);
+Libravatar (https://www.libravatar.org/);
 .It
-self hosted people (SRV DNS query).
+Self hosted libravatar (SRV DNS query).
 .El
 The default is to do a DNS query first and fallback to Gravatar if the
 query fails.
@@ -62,7 +62,7 @@ for the hash creation.
 .It Fl p
 Only use the specified avatar provider.
 .It Fl s
-Use the HTTPS URL instead of the default one.
+Asks for the HTTPS URL.
 .El
 .Sh SEE ALSO
 .Xr md5 1

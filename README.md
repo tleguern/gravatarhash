@@ -24,8 +24,8 @@ address into an URL pointing to an avatar image.
 Three providers are currently supported:
 
 *	Gravatar (https://secure.gravatar.com/);
-*	Libreavatar (https://www.libravatar.org/);
-*	self hosted people (SRV DNS query).
+*	Libravatar (https://www.libravatar.org/);
+*	Self hosted libravatar (SRV DNS query).
 
 The default is to do a DNS query first and fallback to Gravatar if the
 query fails.
@@ -55,10 +55,10 @@ The options are as follows:
 
 **-s**
 
-> Use the HTTPS URL instead of the default one.
+> Asks for the HTTPS URL.
 
 # SEE ALSO
 
 md5(1)
 
-OpenBSD 6.3 - August 19, 2014
+OpenBSD 6.4 - August 19, 2014
