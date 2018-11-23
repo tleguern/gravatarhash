@@ -1,7 +1,10 @@
 PROG= gravatarhash
 SRCS= gravatarhash.sh
 
-BINDIR?= /usr/local/bin
-INSTALL_STRIP=
+.SUFFIXES: .sh
 
-.include <bsd.prog.mk>
+.sh:
+	cp $< $@
+	chmod +x $@
+
+gravatarhash: gravatarhash.sh
